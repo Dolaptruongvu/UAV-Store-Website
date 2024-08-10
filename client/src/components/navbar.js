@@ -27,8 +27,8 @@ function MyNavbar() {
           <input
             type="text"
             placeholder="Search"
-            className="w-full px-2 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-            style={{ width: "100%", maxWidth: "50%" }}
+            className="form-control"
+            style={{ width: "100%", maxWidth: "100%" }}
           />
         </div>
 
