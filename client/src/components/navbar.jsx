@@ -10,7 +10,7 @@ import {
 } from "react-bootstrap";
 function MyNavbar() {
   return (
-    <Navbar bg="light" expand="lg" className="shadow-lg py-2">
+    <Navbar bg="light" expand="lg" className="shadow-lg py-2 mb-4">
       <Container className="d-flex justify-content-between align-items-center">
         {/* Logo on the left */}
         <Navbar.Brand href="/" className="flex-shrink-0">
