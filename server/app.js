@@ -28,7 +28,7 @@ app.use(morgan("common"));
 
 app.use(
   cors({
-    origin: ["http://127.0.0.1:5500"],
+    origin: ["http://127.0.0.1:3000"],
   })
 );
 
@@ -60,7 +60,7 @@ app.use("/", viewRouter);
 
 // Test router
 app.use("/test", (req, res) => {
-  res.json({"statement":"hello bro"});
+  res.json({ statement: "hello bro" });
 });
 
 // Global Error Handling MiddleWare

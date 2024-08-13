@@ -22,6 +22,7 @@ Product.init(
           msg: "Product name cannot exceed 100 characters",
         },
       },
+      unique: true
     },
     images: {
       type: DataTypes.ARRAY(DataTypes.STRING),
@@ -139,6 +140,10 @@ Product.init(
     compatibility: {
       type: DataTypes.STRING, // lưu thông tin về khả năng tương thích, ví dụ: "Compatible with DJI Mavic"
       allowNull: true,
+    },
+    type: {
+      type: DataTypes.JSONB,
+      allowNull: false,
     },
   },
   {

@@ -57,6 +57,10 @@ exports.createProduct = catchAsync(async (req, res, next) => {
   });
 });
 
+// test create product
+
+exports.createProductTest = handlerFactory.createOne(Product);
+
 // Read products
 exports.allProduct = handlerFactory.getAll(Product);
 exports.oneProduct = handlerFactory.getOne(Product);

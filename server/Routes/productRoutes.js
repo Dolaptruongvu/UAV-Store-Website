@@ -17,8 +17,12 @@ router.use("/:productId/bill", billRouter);
 
 // Create product routes
 
-// Get all products
-router.get("/", protect, productController.allProduct);
+
+router 
+  .route("/")
+  .get(productController.allProduct) // loss protect
+  .post(productController.createProductTest); // loss productController.uploadImage, createProduct
+
 
 // Filter products by category
 router.get("/filter", productController.filterProductsByCategory);
@@ -26,7 +30,6 @@ router.get("/filter", productController.filterProductsByCategory);
 // Get one product, Update product, Delete product
 router.use(protect);
 router.use(restrictTo("admin"));
-router.post("/create", productController.uploadImage, productController.createProduct);
 router
   .route("/:id")
   .get(productController.oneProduct)

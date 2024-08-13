@@ -1,8 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+// Định nghĩa kiểu dữ liệu cho các tham số
+interface CarouselImageProps {
+  img: string;
+  text?: string;
+}
 
-function CarouselImage({ img, text }) {
+function CarouselImage({ img, text }: CarouselImageProps) {
     return (
       <div className="carousel-image-container" style={{ 
           width: '100%', 
@@ -26,9 +31,10 @@ function CarouselImage({ img, text }) {
     );
 }
 
+
 CarouselImage.propTypes= {
-    img:PropTypes.string.isRequired,
-    text:PropTypes.string,
+    img: PropTypes.string.isRequired,
+    text: PropTypes.string,
 };
 
 export default CarouselImage;

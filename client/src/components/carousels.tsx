@@ -1,15 +1,28 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import Carousel from 'react-bootstrap/Carousel';
 import CarouselImage from './carousels-image';
 
 function ControlledCarousel() {
-  const [index, setIndex] = useState(0);
+  // Khai báo kiểu dữ liệu cho state `index`
+  const [index, setIndex] = useState<number>(0);
 
-  const handleSelect = (selectedIndex) => {
+  // Định nghĩa kiểu dữ liệu cho hàm handleSelect
+  const handleSelect = (selectedIndex: number) => {
     setIndex(selectedIndex);
   };
+
   return (
-    <Carousel activeIndex={index} onSelect={handleSelect} controls={false} style={{ height: '500px' ,margin: '0 auto',display: 'block',boxShadow: '-22px 26px 58px rgba(0, 0, 0, 0.176)' }}>
+    <Carousel 
+      activeIndex={index} 
+      onSelect={handleSelect} 
+      controls={false} 
+      style={{ 
+        height: '500px', 
+        margin: '0 auto', 
+        display: 'block', 
+        boxShadow: '-22px 26px 58px rgba(0, 0, 0, 0.176)' 
+      }}
+    >
       <Carousel.Item style={{ height: '100%' }}>
         <CarouselImage img="mavic-4-pro" text="First slide" />
         <Carousel.Caption>
