@@ -20,7 +20,7 @@ function ProductList() {
   }, []);
 
   return (
-    <Container className="pt-5">
+    <Container className="pt-5 pb-4 mb-3">
       <Row xs={1} md={4} className="g-4">
         {products.map((product, idx) => (
           <Col key={idx}>

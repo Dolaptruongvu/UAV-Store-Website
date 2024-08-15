@@ -98,3 +98,14 @@ exports.setProductUserIds = (req, res, next) => {
   // if (!req.body.customer) req.body.customer = req.customer.id;
   next();
 };
+
+exports.top3Products = catchAsync(async (req, res, next) => {
+  const products = await Product.findAll({
+    order: [["releaseDate", "DESC"]],
+    limit: 3,
+  });
+  res.status(200).json({
+    status: "success",
+    data: products,
+  });
+});

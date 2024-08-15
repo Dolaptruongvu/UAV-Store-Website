@@ -17,15 +17,17 @@ router.use("/:productId/bill", billRouter);
 
 // Create product routes
 
-
-router 
+router
   .route("/")
   .get(productController.allProduct) // loss protect
   .post(productController.createProductTest); // loss productController.uploadImage, createProduct
 
-
 // Filter products by category
 router.get("/filter", productController.filterProductsByCategory);
+
+// Top 3 products
+
+router.route("/top3Products").get(productController.top3Products);
 
 // Get one product, Update product, Delete product
 router.use(protect);

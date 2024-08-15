@@ -1,15 +1,31 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Carousel from 'react-bootstrap/Carousel';
 import CarouselImage from './carousels-image';
+import axios from 'axios';
 
 function ControlledCarousel() {
   // Khai báo kiểu dữ liệu cho state `index`
   const [index, setIndex] = useState<number>(0);
+  const [products,setProducts] = useState<any[]>([]);
 
   // Định nghĩa kiểu dữ liệu cho hàm handleSelect
   const handleSelect = (selectedIndex: number) => {
     setIndex(selectedIndex);
   };
+  // get top 3 Products
+  useEffect(()=>{
+    const fetchProducts = async() =>{
+      try{
+        const response = await axios.get('http://127.0.0.1:5000/api/v1/products/top3Products')
+        setProducts(response.data.data)
+        
+      }catch(err){
+        console.log(err)
+      }
+    }
+    fetchProducts();
+
+  })
 
   return (
     <Carousel 
@@ -23,27 +39,15 @@ function ControlledCarousel() {
         boxShadow: '-22px 26px 58px rgba(0, 0, 0, 0.176)' 
       }}
     >
-      <Carousel.Item style={{ height: '100%' }}>
-        <CarouselImage img="mavic-4-pro" text="First slide" />
-        <Carousel.Caption>
-          <h3>First slide label</h3>
-          <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
-        </Carousel.Caption>
-      </Carousel.Item>
-      <Carousel.Item style={{ height: '100%' }}>
-        <CarouselImage img="mini-4-pro" text="Second slide" />
-        <Carousel.Caption>
-          <h3>Second slide label</h3>
-          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-        </Carousel.Caption>
-      </Carousel.Item>
-      <Carousel.Item style={{ height: '100%' }}>
-        <CarouselImage img="mini-4" text="Third slide" />
-        <Carousel.Caption>
-          <h3>Third slide label</h3>
-          <p>Praesent commodo cursus magna, vel scelerisque nisl consectetur.</p>
-        </Carousel.Caption>
-      </Carousel.Item>
+      {products && products.map((product,idx)=>(
+         <Carousel.Item style={{ height: '100%' }}>
+            <CarouselImage img="mavic-4-pro" text="First slide" />
+            <Carousel.Caption>
+              <h3>{product.name}</h3>
+              <p>{product.description}</p>
+            </Carousel.Caption>
+         </Carousel.Item>
+      ))}
     </Carousel>
   );
 }
