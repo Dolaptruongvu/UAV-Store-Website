@@ -51,12 +51,11 @@ function MyNavbar() {
               }}
               onMouseEnter={mouseEnter}
               onMouseLeave={mouseLeave}
-              defaultActiveKey="#link1"
             >
-              <ListGroup.Item href="#" action>Dji mini</ListGroup.Item>
-              <ListGroup.Item href="#" action>Dji mavic</ListGroup.Item>
-              <ListGroup.Item href="#" action>Dji Air</ListGroup.Item>
-              <ListGroup.Item href="#" action>Phụ kiện</ListGroup.Item>
+              <ListGroup.Item className="text-secondary" href="http://127.0.0.1:3000/?slugName=Dji-Mavic" action>DJI Mavic</ListGroup.Item>
+              <ListGroup.Item className="text-secondary" href="http://127.0.0.1:3000/?slugName=Dji-Mini" action>DJI Mini</ListGroup.Item>
+              <ListGroup.Item className="text-secondary" href="http://127.0.0.1:3000/?slugName=Dji-Air" action>Dji Air</ListGroup.Item>
+              <ListGroup.Item className="text-secondary" href="http://127.0.0.1:3000/" action>Phụ kiện</ListGroup.Item>
             </ListGroup>
           )}
         </div>

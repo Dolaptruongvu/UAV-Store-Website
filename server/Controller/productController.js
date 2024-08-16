@@ -3,6 +3,8 @@ const { catchAsync } = require("../utils/catchAsync");
 const handlerFactory = require("./handlerFactory");
 const Product = require("../Model/productModel");
 const multer = require("multer");
+const { Op } = require("sequelize");
+const { query } = require("express");
 
 // Cover storage
 const storage = multer.diskStorage({
@@ -62,7 +64,7 @@ exports.createProduct = catchAsync(async (req, res, next) => {
 exports.createProductTest = handlerFactory.createOne(Product);
 
 // Read products
-exports.allProduct = handlerFactory.getAll(Product);
+// exports.allProduct = handlerFactory.getAll(Product);
 exports.oneProduct = handlerFactory.getOne(Product);
 
 // Update product
@@ -108,4 +110,28 @@ exports.top3Products = catchAsync(async (req, res, next) => {
     status: "success",
     data: products,
   });
+});
+
+exports.allProduct = catchAsync(async (req, res, next) => {
+  const { slugName } = req.query;
+  if (slugName) {
+    const products = await Product.findAll({
+      where: {
+        slug: {
+          [Op.iLike]: `${slugName}%`,
+        },
+      },
+    });
+
+    res.status(200).json({
+      status: "success",
+      products,
+    });
+  } else {
+    const products = await Product.findAll({});
+    res.status(200).json({
+      status: "success",
+      products,
+    });
+  }
 });
