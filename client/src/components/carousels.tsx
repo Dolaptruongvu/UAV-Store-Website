@@ -25,7 +25,7 @@ function ControlledCarousel() {
     }
     fetchProducts();
 
-  },[])
+  })
 
   return (
     <Carousel 
@@ -41,7 +41,7 @@ function ControlledCarousel() {
     >
       {products && products.map((product,idx)=>(
          <Carousel.Item style={{ height: '100%' }}>
-            <CarouselImage img="mavic-4-pro" text="First slide" />
+            <CarouselImage img={`${product.slug}`} text="First slide" />
             <Carousel.Caption>
               <h3>{product.name}</h3>
               <p>{product.description}</p>

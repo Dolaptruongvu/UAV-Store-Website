@@ -72,12 +72,12 @@ function MyNavbar() {
 
         {/* Right section: Login and Signup buttons */}
         <div className="d-flex flex-shrink-0">
-          <Button variant="outline-primary" className="me-2 py-2 px-4">
+          <a href="/login" className="btn btn-outline-primary me-2 py-2 px-4">
             Đăng Nhập
-          </Button>
-          <Button variant="outline-secondary" className="py-2 px-4">
+          </a>
+          <a href="/register" className="btn btn-outline-secondary py-2 px-4">
             Đăng Ký
-          </Button>
+          </a>
         </div>
       </Container>
     </Navbar>

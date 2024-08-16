@@ -1,16 +1,19 @@
+import React from "react";
 import MyNavbar from "../components/navbar";
 import ProductList from "../components/productList";
 import ControlledCarousel from "../components/carousels";
 import Footer from "../components/footer";
-function Home() {
+
+// Explicitly typing the Home component
+const Home: React.FC = () => {
   return (
     <>
-      <MyNavbar></MyNavbar>
-      <ControlledCarousel></ControlledCarousel>
-      <ProductList></ProductList>
-      <Footer></Footer>
+      <MyNavbar />
+      <ControlledCarousel />
+      <ProductList />
+      <Footer />
     </>
   );
-}
+};
 
 export default Home;
