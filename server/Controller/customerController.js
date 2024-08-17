@@ -115,7 +115,7 @@ exports.setShipperId = catchAsync(async (req, res, next) => {
   }
 
   const shipper = shippers[0];
-  await shipper.increment('numbOfOrder'); // Update number of orders
+  await shipper.increment("numbOfOrder"); // Update number of orders
   req.body.shipper = shipper.id;
   console.log(shipper);
   next();
@@ -138,5 +138,19 @@ exports.setRoles = catchAsync(async (req, res, next) => {
   res.status(200).json({
     status: "success",
     data: customer[1][0], // Sequelize returns an array, [affectedCount, affectedRows]
+  });
+});
+
+exports.getMeForAuthentication = catchAsync(async (req, res, next) => {
+  const customer = req.customer;
+  if (!customer) {
+    return next(new AppError("No customer found with that ID", 404));
+  }
+
+  res.status(200).json({
+    status: "success",
+    data: {
+      customer,
+    },
   });
 });

@@ -23,7 +23,9 @@ router
   .get(customerController.getCustomer)
   .delete(customerController.deleteCustomer)
   .patch(customerController.updatedCustomer);
-
+router
+  .route("/me")
+  .get(authController.isLoggedIn, customerController.getMeForAuthentication);
 // route for admin
 
 router
@@ -33,6 +35,5 @@ router
     authController.restrictTo("admin"),
     customerController.setRoles
   );
-
 
 module.exports = router;

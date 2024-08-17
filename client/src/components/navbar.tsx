@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import {
   Navbar,
@@ -9,8 +9,14 @@ import {
   Container,
   ListGroup,
 } from "react-bootstrap";
+import { AuthContext } from "./login/authProvider";
+
+
 function MyNavbar() {
   const[isHovered,SetIsHovered] = useState(false);
+  const { customer } = useContext(AuthContext);
+
+  console.log("Customer in navbar:", customer);
 
   const mouseEnter = () =>{
     SetIsHovered(true);
@@ -72,12 +78,23 @@ function MyNavbar() {
 
         {/* Right section: Login and Signup buttons */}
         <div className="d-flex flex-shrink-0">
-          <a href="/login" className="btn btn-outline-primary me-2 py-2 px-4">
-            Đăng Nhập
-          </a>
-          <a href="/register" className="btn btn-outline-secondary py-2 px-4">
-            Đăng Ký
-          </a>
+          {customer ? (
+            <>
+              <a href="/logout" className="btn btn-outline-danger me-2 py-2 px-4">
+                Đăng Xuất
+              </a>
+              {/* Add more authenticated-only links or buttons here */}
+            </>
+          ) : (
+            <>
+              <a href="/login" className="btn btn-outline-primary me-2 py-2 px-4">
+                Đăng Nhập
+              </a>
+              <a href="/register" className="btn btn-outline-secondary py-2 px-4">
+                Đăng Ký
+              </a>
+            </>
+          )}
         </div>
       </Container>
     </Navbar>

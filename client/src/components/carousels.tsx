@@ -25,7 +25,7 @@ function ControlledCarousel() {
     }
     fetchProducts();
 
-  })
+  },[])
 
   return (
     <Carousel 

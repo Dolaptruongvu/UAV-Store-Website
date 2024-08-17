@@ -4,6 +4,7 @@ const Customer = require("../Model/customerModel"); // Sequelize model
 const { catchAsync } = require("../utils/catchAsync");
 const AppError = require("../utils/appError");
 const crypto = require("crypto");
+const { decode } = require("punycode");
 
 const signToken = (id, secret, expire) => {
   return jwt.sign({ id }, secret, {
@@ -52,7 +53,7 @@ exports.login = catchAsync(async (req, res, next) => {
 
   const user = await Customer.findOne({ where: { email } });
 
-  if (!user || !(await user.validPassword(password))) {
+  if (!user || !(await user.correctPassword(password, user.password))) {
     return next(new AppError("Incorrect email or password", 401));
   }
 
@@ -62,11 +63,15 @@ exports.login = catchAsync(async (req, res, next) => {
 exports.isLoggedIn = async (req, res, next) => {
   try {
     res.locals.customer = null;
+    console.log("try to access cookies");
     if (req.cookies.jwt) {
       const decoded = await promisify(jwt.verify)(
         req.cookies.jwt,
         process.env.JWT_SECRET
       );
+      console.log("has cookies");
+
+      console.log("debug decoded id : ", decoded.id);
 
       const currentUser = await Customer.findByPk(decoded.id);
       if (!currentUser) {
@@ -77,7 +82,8 @@ exports.isLoggedIn = async (req, res, next) => {
         return next();
       }
 
-      res.locals.customer = currentUser;
+      req.customer = currentUser; // Đảm bảo req.customer được gán
+      console.log(req.customer);
 
       return next();
     }
@@ -119,7 +125,10 @@ exports.protect = catchAsync(async (req, res, next) => {
   const currentUser = await Customer.findByPk(decoded.id);
   if (!currentUser) {
     return next(
-      new AppError("The user belonging to this token does no longer exist.", 401)
+      new AppError(
+        "The user belonging to this token does no longer exist.",
+        401
+      )
     );
   }
 

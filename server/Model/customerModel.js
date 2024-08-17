@@ -1,8 +1,8 @@
 const { DataTypes, Model } = require("sequelize");
 const sequelize = require("../sequelize");
-const { bcrypt } = require("bcryptjs");
-const { crypto } = require("crypto");
-const { validator } = require("validator");
+const bcrypt = require("bcryptjs");
+const crypto = require("crypto");
+const validator = require("validator");
 
 class Customer extends Model {
   async correctPassword(candidatePassword, userPassword) {
@@ -92,10 +92,9 @@ Customer.init(
       },
     },
     passwordConfirm: {
-      type: DataTypes.VIRTUAL, // This field won't be stored in the database
+      type: DataTypes.VIRTUAL,
       allowNull: false,
       validate: {
-        // Custom validator to match passwordConfirm with password
         confirmPassword(value) {
           if (value !== this.password) {
             throw new Error("The passwords are not the same!");
@@ -134,11 +133,10 @@ Customer.init(
         if (customer.changed("password")) {
           customer.password = await bcrypt.hash(customer.password, 12);
           customer.passwordConfirm = undefined;
-        }
-      },
-      beforeSave: (customer) => {
-        if (!customer.isNewRecord && customer.changed("password")) {
-          customer.passwordChangedAt = new Date(Date.now() - 1000);
+
+          if (!customer.isNewRecord) {
+            customer.passwordChangedAt = new Date(Date.now() - 1000);
+          }
         }
       },
       beforeFind: (options) => {
