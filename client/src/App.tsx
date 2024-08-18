@@ -4,6 +4,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "./index.css";
 import Home from "./pages/Home"; // Ensure the path to Home component is correct
 import Login from "./pages/Login";
+import SignUp from "./pages/Signup";
 
 function App() {
   return (
@@ -11,6 +12,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login/>}/>
+        <Route path="/signup" element={<SignUp/>}/>
       </Routes>
     </Router>
   );

@@ -12,9 +12,9 @@ const signToken = (id, secret, expire) => {
   });
 };
 
-const createSendToken = (user, statusCode, req, res) => {
+const createSendToken = (customer, statusCode, req, res) => {
   const token = signToken(
-    user.id, // Use Sequelize's primary key (id)
+    customer.id, // Use Sequelize's primary key (id)
     process.env.JWT_SECRET,
     process.env.JWT_EXPIRES_IN
   );
@@ -28,13 +28,13 @@ const createSendToken = (user, statusCode, req, res) => {
 
   res.cookie("jwt", token, cookieOptions);
 
-  user.password = undefined;
+  customer.password = undefined;
 
   res.status(statusCode).json({
     status: "success",
     token,
     data: {
-      user,
+      customer,
     },
   });
 };
@@ -51,13 +51,16 @@ exports.login = catchAsync(async (req, res, next) => {
     return next(new AppError("Please provide email and password!", 400));
   }
 
-  const user = await Customer.findOne({ where: { email } });
+  const customer = await Customer.findOne({ where: { email } });
 
-  if (!user || !(await user.correctPassword(password, user.password))) {
+  if (
+    !customer ||
+    !(await customer.correctPassword(password, customer.password))
+  ) {
     return next(new AppError("Incorrect email or password", 401));
   }
 
-  createSendToken(user, 200, req, res);
+  createSendToken(customer, 200, req, res);
 });
 
 exports.isLoggedIn = async (req, res, next) => {
@@ -69,9 +72,6 @@ exports.isLoggedIn = async (req, res, next) => {
         req.cookies.jwt,
         process.env.JWT_SECRET
       );
-      console.log("has cookies");
-
-      console.log("debug decoded id : ", decoded.id);
 
       const currentUser = await Customer.findByPk(decoded.id);
       if (!currentUser) {
@@ -95,7 +95,7 @@ exports.isLoggedIn = async (req, res, next) => {
 
 exports.logout = (req, res) => {
   res.cookie("jwt", "logouttoken", {
-    expires: new Date(Date.now() + 10 * 1000),
+    expires: new Date(Date.now() + 0.001 * 1000),
     httpOnly: true,
   });
   res.status(200).json({

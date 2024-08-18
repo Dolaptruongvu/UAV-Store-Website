@@ -1,8 +1,9 @@
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { AuthContext } from './authProvider';
 
 
 
@@ -10,6 +11,7 @@ function LoginForm() {
   const [email,updateEmail] = useState<string>('');
   const [password,updatePassword] = useState<string>('');
   const navigate = useNavigate();
+  const {customer,setCustomer} = useContext(AuthContext)
   const handleEmailChange= (e:React.ChangeEvent<HTMLInputElement>)=>{
     updateEmail(e.target.value);
   }
@@ -23,11 +25,13 @@ function LoginForm() {
       email,
       password
     }
-
+   
     try {
       const response = await axios.post('http://127.0.0.1:5000/api/v1/customer/login', data,{ withCredentials: true });
       if (response.data.status === 'success') {
-       navigate('/'); // Redirect to the dashboard or another page
+        const customer = response.data.data
+        setCustomer(customer)
+        navigate('/'); // Redirect to the dashboard or another page
       }
     } catch (err) {
       console.log(err);

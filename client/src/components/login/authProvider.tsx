@@ -1,49 +1,45 @@
-import React,{Children, createContext,useEffect, useState, ReactNode} from "react";
+import React, { createContext, useEffect, useState, ReactNode } from "react";
 import axiosInstance from "../../utilities/axiousEdition";
 
 interface AuthContextType {
-  customer: any; 
+  customer: any;
+  setCustomer: React.Dispatch<React.SetStateAction<any>>;
 }
 
 const defaultContextValue: AuthContextType = {
   customer: null,
+  setCustomer: () => {},
 };
 export const AuthContext = createContext<AuthContextType>(defaultContextValue);
 
-
-// Define the props type for AuthProvider
 interface AuthProviderProps {
-  children: ReactNode; // Use ReactNode for children
+  children: ReactNode;
 }
 
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
-  const [customer, setCustomer] = useState<any>(null); // Replace 'any' with the actual type if available
+  const [customer, setCustomer] = useState<any>(null);
 
   useEffect(() => {
-  const checkAuth = async () => {
-    console.log("Checking authentication..."); // Debug log
-    try {
-      const response = await axiosInstance.get('/customer/me');
-      console.log("API response:", response.data); // Debug log
-      if (response.data.status === 'success') {
-        setCustomer(response.data.data.customer);
-        console.log("Customer set in context:", response.data.data.customer);
-      } else {
-        console.log("API response status is not success.");
+    const checkAuth = async () => {
+      try {
+        const response = await axiosInstance.get('/customer/me', { withCredentials: true });
+        if (response.data.status === 'success') {
+          setCustomer(response.data.data.customer);
+        } else {
+          setCustomer(null);
+        }
+      } catch (err) {
+        console.error("API call error:", err);
+        setCustomer(null);
       }
-    } catch (err) {
-      console.log("API call error:", err); // Debug log
-    }
-  };
+    };
 
-  checkAuth(); // Don't forget to call the function
-}, []);
-
-
+    checkAuth();
+  }, []); // Empty dependency array ensures this runs only once when the component mounts
 
   return (
-    <AuthContext.Provider value={{ customer }}>
-      {children} {/* Ensure the children prop is rendered */}
+    <AuthContext.Provider value={{ customer, setCustomer }}>
+      {children}
     </AuthContext.Provider>
   );
 };
