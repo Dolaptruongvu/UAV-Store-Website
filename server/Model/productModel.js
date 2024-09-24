@@ -22,7 +22,7 @@ Product.init(
           msg: "Product name cannot exceed 100 characters",
         },
       },
-      unique: true
+      unique: true,
     },
     images: {
       type: DataTypes.ARRAY(DataTypes.STRING),

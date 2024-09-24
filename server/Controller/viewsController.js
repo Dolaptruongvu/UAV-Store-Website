@@ -2,10 +2,15 @@ const Product = require("../Model/productModel"); // Import the Product model
 const Bill = require("../Model/billModel");
 const { catchAsync } = require("../utils/catchAsync"); // Import catchAsync helper
 const Customer = require("../Model/customerModel");
+const { Op } = require("sequelize");
 
 exports.getOverview = catchAsync(async (req, res, next) => {
-  const famousProducts = await Product.find({ ratings: { $gte: 4.7 } });
-  const specialOffer = await Product.find({ price: { $lte: 10 } });
+  const famousProducts = await Product.findAll({
+    where: { ratings: { [Op.gte]: 4.7 } },
+  });
+  const specialOffer = await Product.findAll({
+    where: { price: { [Op.lte]: 10 } },
+  });
 
   res.status(200).render("index", {
     famousProducts, // Pass the products data to the template
